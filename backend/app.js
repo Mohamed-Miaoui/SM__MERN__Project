@@ -8,8 +8,9 @@ const path = require("path")
 const cors = require("cors")
 
 
-//dummy routes
+//routes
 var authRouter = require('./routes/auth');
+var userRouter = require('./routes/user');
 
 
 app.use(express.json());
@@ -18,8 +19,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 
-//dummy routes
+//routes
 app.use('/auth', authRouter);
+app.use('/user', userRouter);
 
 
 
