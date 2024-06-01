@@ -1,9 +1,12 @@
-import User from '../models/User';
+const User = require('../models/User')
+const jwt = require("jsonwebtoken");
+
+
 
 const bcrypt = require('bcrypt');
 
 //register user
-export const register = async (req,res) =>{
+ const register = async (req,res) =>{
     try {
         const {
             firstName,
@@ -37,4 +40,35 @@ export const register = async (req,res) =>{
     } catch (error) {
         res.status(500).json({errors : error.message})
     }
+}
+
+//login user
+const login = async (req,res) => {
+    try {
+        const {email, password} =req.body
+        const user = await User.findOne({email:email});
+        // NO user with specified email
+        if(!user){
+            return res.status(400).json({msg:"user does not exist"})
+        }
+        // if email exist check encrypted password 
+        const isMatch= await bcrypt.compare(password, user.password);
+        //password do not match
+        if(!isMatch){
+            return res.status(400).json({msg:"Wrong Password" })
+        }
+        //The sign method creates a JWT by encoding the payload(userid) with the secret key in (process.env.JWT_SECRET).
+        //token = validation(it proves ur authenticty)
+        const token = jwt.sign({id:user._id},process.env.JWT_SECRET);
+        //we delete the password so it will not be send to frontend for safty reasons
+        delete user.password;
+        res.status(200).json({token,user})
+    } catch (error) {
+        res.status(500).json({errors:error.message})
+    }
+}
+
+module.exports = {
+    register,
+    login
 }
