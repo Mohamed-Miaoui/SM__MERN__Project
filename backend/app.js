@@ -39,7 +39,7 @@ const storage = multer.diskStorage({
   app.use('/images',express.static('upload/images'))
   //http://localhost:8000/upload 
   //product is the field name
-  app.post("/upload",upload.single('product'),(req,res)=>{
+  app.post("/upload",upload.single('user'),(req,res)=>{
     res.json({
       success : 1,
       image_url : `http://localhost:8000/images/${req.file.filename}` //we can acces the img threw this url
