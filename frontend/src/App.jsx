@@ -1,11 +1,20 @@
 import { useState } from "react";
-
+import HomePage from "./pages/homePage/home";
+import LoginPage from "./pages/loginPage/login";
+import ProfilePage from "./pages/profilePage/profile";
+import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <p>this is a test</p>
+      <div className="app">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<LoginPage />}></Route>
+            <Route path="/home" element={<HomePage />}></Route>
+            <Route path="/profile/:userId" element={<ProfilePage />}></Route>
+          </Routes>
+        </BrowserRouter>
+      </div>
     </>
   );
 }
